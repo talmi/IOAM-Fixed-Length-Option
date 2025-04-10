@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc strict="yes" ?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<rfc category="std" docName="draft-fixed-ippm-ioam-fixed-option-00"
+     ipr="trust200902">
+  <front>
+    <title abbrev="Fixed IOAM Option">In Situ Operations, Administration, and Maintenance (IOAM) Fixed-Length Option</title>
+
+    <author fullname="Author Author" initials="A."
+            surname="Author">
+      <organization abbrev="">Affiliation</organization>
+
+      <address>
+        <email>email@gmail.com</email>
+      </address>
+    </author>
+
+    <date year="2025"/>
+
+    <area>OPS</area>
+
+    <workgroup>IPPM</workgroup>
+
+    <keyword>IOAM</keyword>
+
+    <abstract>
+      <t>In situ measurement is performed by incorporating performance related 
+	  information into in-flight data packets. This document specifies a 
+	  new IOAM Option-Type that has a fixed length and can be updated by
+	  transit nodes along the path. It enables lightweight monitoring using constant-length 
+	  data that does not depend on the number of hops in the network.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+	  <t>In Situ Operations, Administration, and Maintenance (IOAM) 
+	  <xref target="RFC9197"/> is used for measuring and monitoring a network
+	  by incorporating measurement and operational data into some or all of
+	  the data packets. <xref target="RFC9197"/> has defined several
+	  Option-Types, intended for different purposes.</t>
+
+	  <t>This document introduces a new IOAM Option-Type that can be 
+	  incorporated into data packets and updated by transit
+	  nodes along the path. Compared to existing IOAM Trace Option-Types, the 
+	  new Option-Type provides coarse-grained performance information using 
+	  data fields that have a constant length.</t>
+	  
+	  <t>There are several in-progress proposals that use a fixed-size
+	  telemetry header, including <xref target="I-D.cxx-ippm-ioamaggr"/>, 
+	  <xref target="I-D.mzbc-ippm-transit-measurement-option"/>,
+	  <xref target="I-D.xiao-ippm-ioam-trace-extensions"/>,
+	  <xref target="I-D.filsfils-ippm-path-tracing"/>
+	  and <xref target="I-D.ravi-ippm-csig"/>.
+	  These proposals can potentially benefit from a generic 
+	  IOAM Fixed-Length Option-Type.</t>
+	  
+
+    </section>
+
+    <section anchor="Conventions" title="Conventions">
+      <section title="Requirement Language">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+        "OPTIONAL" in this document are to be interpreted as described in BCP
+        14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only
+        when, they appear in all capitals, as shown here.</t>
+      </section>
+
+      <section title="Terminology">
+	  
+        <t>Abbreviations used in this document:</t>
+
+        <t><list hangIndent="11" style="hanging">
+            <t hangText="IOAM:">In-situ Operations, Administration, and
+            Maintenance</t>
+
+            <t hangText="OAM:">Operations, Administration, and Maintenance</t>
+
+          </list></t>
+
+	    <t>The terms Option-Type, encapsulating 
+		node, decapsulating node, and transit node are defined in 
+		<xref target="RFC9197"/>.</t>
+
+      </section>
+    </section>
+
+    <section anchor="option" title="In situ Fixed-Length Option-Type">
+      <t>This document defines a new IOAM Option-Type, the
+	  Fixed-Length Option-Type. <xref target="FixedFormat"/> presents the
+	  format of this Option-Type.</t>
+
+          <figure align="center" anchor="FixedFormat"
+                  title="Fixed-Length Option-Type">
+            <artwork align="left"><![CDATA[
+         
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |        Namespace-ID           |    IOAM Fixed-Length-Type     |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   |    Option data depending on the Fixed-Length-Type value       |
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   
+           ]]></artwork>
+          </figure>
+
+      <t>
+	     An IOAM node that complies to this draft MUST support the following
+		 fields, as depicted in <xref target="FixedFormat"/>:
+		 
+		 <list style="hanging">
+		   <t hangText="Namespace-ID:">A 16-bit namespace identifier, as 
+		   defined in <xref target="RFC9197"/>.</t>
+
+
+         <t hangText="IOAM Fixed-Length-Type">16-bit identifier that specifies 
+		 which data types are used in the Fixed-Length Option-Type. A new 
+		 registry is defined for this field, as specified in 
+		 <xref target="IANA"/>.</t>
+                </list></t>
+		   
+	  <t>As in <xref target="RFC9197"/>, the Fixed-Length Option-Type can
+      be incorporated into all or a subset of the traffic that is forwarded
+      by the encapsulating node. Notably, this option adds a fixed and 
+	  low overhead to data packets, which remains constant along the path.</t>
+	  
+	  
+	  
+		  
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+        <t>To be added to a future version of this document.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>The security considerations of IOAM in general are discussed in 
+	  <xref target="RFC9197"/>. The Fixed-Length Option-Type may be used for reconnaissance, which
+	  in turn can facilitate other types of attacks. As in other types of IOAM
+	  data fields, a malicious attacker can manipulate the field 
+	  values in order to create a false illusion of nonexistent network issues 
+	  or prevent the detection of actual ones.</t>
+    </section>
+  </middle>
+
+  <back>
+    <references title="Normative References">
+      <?rfc include='reference.RFC.2119'?>
+
+      <?rfc include='reference.RFC.8174'?>
+
+      <?rfc include='reference.RFC.9197'?>
+    </references>
+
+    <references title="Informative References">
+      <?rfc include='reference.I-D.cxx-ippm-ioamaggr'?>
+	  
+      <?rfc include='reference.I-D.mzbc-ippm-transit-measurement-option'?>
+
+      <?rfc include='reference.I-D.xiao-ippm-ioam-trace-extensions'?>
+
+      <?rfc include='reference.I-D.filsfils-ippm-path-tracing'?>
+
+      <?rfc include='reference.I-D.ravi-ippm-csig'?>
+    </references>
+
+  </back>
+</rfc>
