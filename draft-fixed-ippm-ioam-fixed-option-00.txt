@@ -1,0 +1,280 @@
+
+
+
+
+IPPM                                                           A. Author
+Internet-Draft                                               Affiliation
+Intended status: Standards Track                           10 April 2025
+Expires: 12 October 2025
+
+
+In Situ Operations, Administration, and Maintenance (IOAM) Fixed-Length
+                                 Option
+                 draft-fixed-ippm-ioam-fixed-option-00
+
+Abstract
+
+   In situ measurement is performed by incorporating performance related
+   information into in-flight data packets.  This document specifies a
+   new IOAM Option-Type that has a fixed length and can be updated by
+   transit nodes along the path.  It enables lightweight monitoring
+   using constant-length data that does not depend on the number of hops
+   in the network.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 12 October 2025.
+
+Copyright Notice
+
+   Copyright (c) 2025 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+Author                   Expires 12 October 2025                [Page 1]
+
+Internet-Draft              Fixed IOAM Option                 April 2025
+
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Conventions . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  Requirement Language  . . . . . . . . . . . . . . . . . .   3
+     2.2.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  In situ Fixed-Length Option-Type  . . . . . . . . . . . . . .   3
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     6.2.  Informative References  . . . . . . . . . . . . . . . . .   4
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+
+1.  Introduction
+
+   In Situ Operations, Administration, and Maintenance (IOAM) [RFC9197]
+   is used for measuring and monitoring a network by incorporating
+   measurement and operational data into some or all of the data
+   packets.  [RFC9197] has defined several Option-Types, intended for
+   different purposes.
+
+   This document introduces a new IOAM Option-Type that can be
+   incorporated into data packets and updated by transit nodes along the
+   path.  Compared to existing IOAM Trace Option-Types, the new Option-
+   Type provides coarse-grained performance information using data
+   fields that have a constant length.
+
+   There are several in-progress proposals that use a fixed-size
+   telemetry header, including [I-D.cxx-ippm-ioamaggr],
+   [I-D.mzbc-ippm-transit-measurement-option],
+   [I-D.xiao-ippm-ioam-trace-extensions],
+   [I-D.filsfils-ippm-path-tracing] and [I-D.ravi-ippm-csig].  These
+   proposals can potentially benefit from a generic IOAM Fixed-Length
+   Option-Type.
+
+
+
+
+
+
+
+Author                   Expires 12 October 2025                [Page 2]
+
+Internet-Draft              Fixed IOAM Option                 April 2025
+
+
+2.  Conventions
+
+2.1.  Requirement Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+2.2.  Terminology
+
+   Abbreviations used in this document:
+
+   IOAM:      In-situ Operations, Administration, and Maintenance
+
+   OAM:       Operations, Administration, and Maintenance
+
+   The terms Option-Type, encapsulating node, decapsulating node, and
+   transit node are defined in [RFC9197].
+
+3.  In situ Fixed-Length Option-Type
+
+   This document defines a new IOAM Option-Type, the Fixed-Length
+   Option-Type.  Figure 1 presents the format of this Option-Type.
+
+
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |        Namespace-ID           |    IOAM Fixed-Length-Type     |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                                                               |
+      |    Option data depending on the Fixed-Length-Type value       |
+      |                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+                     Figure 1: Fixed-Length Option-Type
+
+   An IOAM node that complies to this draft MUST support the following
+   fields, as depicted in Figure 1:
+
+   Namespace-ID:  A 16-bit namespace identifier, as defined in
+      [RFC9197].
+
+   IOAM Fixed-Length-Type  16-bit identifier that specifies which data
+
+
+
+
+Author                   Expires 12 October 2025                [Page 3]
+
+Internet-Draft              Fixed IOAM Option                 April 2025
+
+
+      types are used in the Fixed-Length Option-Type.  A new registry is
+      defined for this field, as specified in Section 4.
+
+   As in [RFC9197], the Fixed-Length Option-Type can be incorporated
+   into all or a subset of the traffic that is forwarded by the
+   encapsulating node.  Notably, this option adds a fixed and low
+   overhead to data packets, which remains constant along the path.
+
+4.  IANA Considerations
+
+   To be added to a future version of this document.
+
+5.  Security Considerations
+
+   The security considerations of IOAM in general are discussed in
+   [RFC9197].  The Fixed-Length Option-Type may be used for
+   reconnaissance, which in turn can facilitate other types of attacks.
+   As in other types of IOAM data fields, a malicious attacker can
+   manipulate the field values in order to create a false illusion of
+   nonexistent network issues or prevent the detection of actual ones.
+
+6.  References
+
+6.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC9197]  Brockners, F., Ed., Bhandari, S., Ed., and T. Mizrahi,
+              Ed., "Data Fields for In Situ Operations, Administration,
+              and Maintenance (IOAM)", RFC 9197, DOI 10.17487/RFC9197,
+              May 2022, <https://www.rfc-editor.org/info/rfc9197>.
+
+6.2.  Informative References
+
+   [I-D.cxx-ippm-ioamaggr]
+              Clemm, A. and Metzger, "Aggregation Trace Option for In-
+              situ Operations, Administration, and Maintenance (IOAM)",
+              Work in Progress, Internet-Draft, draft-cxx-ippm-ioamaggr-
+              02, 20 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-cxx-ippm-
+              ioamaggr-02>.
+
+
+
+Author                   Expires 12 October 2025                [Page 4]
+
+Internet-Draft              Fixed IOAM Option                 April 2025
+
+
+   [I-D.filsfils-ippm-path-tracing]
+              Filsfils, C., Abdelsalam, A., Camarillo, P., Yufit, M.,
+              Graf, T., Su, Y., Matsushima, S., Valentine, M., and
+              Dhamija, "Path Tracing in SRv6 networks", Work in
+              Progress, Internet-Draft, draft-filsfils-ippm-path-
+              tracing-02, 25 November 2024,
+              <https://datatracker.ietf.org/doc/html/draft-filsfils-
+              ippm-path-tracing-02>.
+
+   [I-D.mzbc-ippm-transit-measurement-option]
+              Mizrahi, T., Zhou, T., Belkar, S., and R. Cohen, "The
+              Transit Measurement Option", Work in Progress, Internet-
+              Draft, draft-mzbc-ippm-transit-measurement-option-05, 7
+              January 2025, <https://datatracker.ietf.org/doc/html/
+              draft-mzbc-ippm-transit-measurement-option-05>.
+
+   [I-D.ravi-ippm-csig]
+              Ravi, A., Dukkipati, N., Mehta, N., and J. Kumar,
+              "Congestion Signaling (CSIG)", Work in Progress, Internet-
+              Draft, draft-ravi-ippm-csig-01, 2 February 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ravi-ippm-
+              csig-01>.
+
+   [I-D.xiao-ippm-ioam-trace-extensions]
+              Min, X. and W. Duan, "Extensions to IOAM Trace Option for
+              Carrying Fixed-Size Data", Work in Progress, Internet-
+              Draft, draft-xiao-ippm-ioam-trace-extensions-00, 21
+              October 2024, <https://datatracker.ietf.org/doc/html/
+              draft-xiao-ippm-ioam-trace-extensions-00>.
+
+Author's Address
+
+   Author Author
+   Affiliation
+   Email: email@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Author                   Expires 12 October 2025                [Page 5]
