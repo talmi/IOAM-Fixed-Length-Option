@@ -4,8 +4,8 @@
 
 IPPM                                                           A. Author
 Internet-Draft                                               Affiliation
-Intended status: Standards Track                           10 April 2025
-Expires: 12 October 2025
+Intended status: Standards Track                           14 April 2025
+Expires: 16 October 2025
 
 
 In Situ Operations, Administration, and Maintenance (IOAM) Fixed-Length
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 October 2025.
+   This Internet-Draft will expire on 16 October 2025.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Author                   Expires 12 October 2025                [Page 1]
+Author                   Expires 16 October 2025                [Page 1]
 
 Internet-Draft              Fixed IOAM Option                 April 2025
 
@@ -78,7 +78,7 @@ Table of Contents
    5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .   4
+     6.2.  Informative References  . . . . . . . . . . . . . . . . .   5
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Author                   Expires 12 October 2025                [Page 2]
+Author                   Expires 16 October 2025                [Page 2]
 
 Internet-Draft              Fixed IOAM Option                 April 2025
 
@@ -138,7 +138,10 @@ Internet-Draft              Fixed IOAM Option                 April 2025
 3.  In situ Fixed-Length Option-Type
 
    This document defines a new IOAM Option-Type, the Fixed-Length
-   Option-Type.  Figure 1 presents the format of this Option-Type.
+   Option-Type.  The length of the Fixed-Length Option-Type MUST NOT be
+   modified by IOAN transit nodes.  However, IOAM transit nodes MAY
+   modify the option data in the Fixed-Length Option-Type.  Figure 1
+   presents the format of this Option-Type.
 
 
        0                   1                   2                   3
@@ -160,18 +163,24 @@ Internet-Draft              Fixed IOAM Option                 April 2025
    Namespace-ID:  A 16-bit namespace identifier, as defined in
       [RFC9197].
 
-   IOAM Fixed-Length-Type  16-bit identifier that specifies which data
 
 
-
-
-Author                   Expires 12 October 2025                [Page 3]
+Author                   Expires 16 October 2025                [Page 3]
 
 Internet-Draft              Fixed IOAM Option                 April 2025
 
 
+   IOAM Fixed-Length-Type  16-bit identifier that specifies which data
       types are used in the Fixed-Length Option-Type.  A new registry is
       defined for this field, as specified in Section 4.
+
+   The option data that follows the Fixed-Length-Type has a constant
+   length that is not modified by transit nodes.  The semantics and
+   length of the option data are determined by the specific Fixed-
+   Length-Type value.  The option data might consist of more than one
+   sub-field.  The specification of the Fixed-Length-Type values and the
+   corresponding option data formats is outside the scope of this
+   document.
 
    As in [RFC9197], the Fixed-Length Option-Type can be incorporated
    into all or a subset of the traffic that is forwarded by the
@@ -209,6 +218,14 @@ Internet-Draft              Fixed IOAM Option                 April 2025
               and Maintenance (IOAM)", RFC 9197, DOI 10.17487/RFC9197,
               May 2022, <https://www.rfc-editor.org/info/rfc9197>.
 
+
+
+
+Author                   Expires 16 October 2025                [Page 4]
+
+Internet-Draft              Fixed IOAM Option                 April 2025
+
+
 6.2.  Informative References
 
    [I-D.cxx-ippm-ioamaggr]
@@ -218,13 +235,6 @@ Internet-Draft              Fixed IOAM Option                 April 2025
               02, 20 October 2024,
               <https://datatracker.ietf.org/doc/html/draft-cxx-ippm-
               ioamaggr-02>.
-
-
-
-Author                   Expires 12 October 2025                [Page 4]
-
-Internet-Draft              Fixed IOAM Option                 April 2025
-
 
    [I-D.filsfils-ippm-path-tracing]
               Filsfils, C., Abdelsalam, A., Camarillo, P., Yufit, M.,
@@ -267,14 +277,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-Author                   Expires 12 October 2025                [Page 5]
+Author                   Expires 16 October 2025                [Page 5]
