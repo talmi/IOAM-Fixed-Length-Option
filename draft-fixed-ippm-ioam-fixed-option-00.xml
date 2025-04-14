@@ -95,7 +95,11 @@
 
     <section anchor="option" title="In situ Fixed-Length Option-Type">
       <t>This document defines a new IOAM Option-Type, the
-	  Fixed-Length Option-Type. <xref target="FixedFormat"/> presents the
+	  Fixed-Length Option-Type. The length of the Fixed-Length 
+	  Option-Type MUST NOT be modified by IOAN transit nodes.
+	  However, IOAM transit nodes MAY modify the option data
+	  in the Fixed-Length Option-Type.
+	  <xref target="FixedFormat"/> presents the
 	  format of this Option-Type.</t>
 
           <figure align="center" anchor="FixedFormat"
@@ -129,7 +133,14 @@
 		 registry is defined for this field, as specified in 
 		 <xref target="IANA"/>.</t>
                 </list></t>
-		   
+
+	  <t>The option data that follows the Fixed-Length-Type has a constant
+      length that is not modified by transit nodes. The semantics and length
+      of the option data are determined by the specific Fixed-Length-Type value.
+      The option data might consist of more than one sub-field. The specification
+      of the Fixed-Length-Type values and the corresponding option data formats
+      is outside the scope of this document.</t>
+	    
 	  <t>As in <xref target="RFC9197"/>, the Fixed-Length Option-Type can
       be incorporated into all or a subset of the traffic that is forwarded
       by the encapsulating node. Notably, this option adds a fixed and 
